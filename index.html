@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chronos One. El tiempo, en pausa.</title>
+    <meta name="description" content="Un reloj de bolsillo pausa, rebobina o adelanta diez segundos en tu rama personal. Treinta dólares al mes." />
+    <meta name="theme-color" content="#050505" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400&family=Space+Grotesk:wght@400&display=swap" rel="stylesheet" />
+    <script>
+      try {
+        var t = localStorage.getItem('chronos-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <h1>El tiempo, en pausa.</h1>
+      <p>Un reloj de bolsillo abre una rama de la realidad que solo es tuya. La línea principal no se mueve.</p>
+      <p>Un clic: tu rama se queda quieta. Dos clics: diez segundos atrás. Tres clics: diez segundos adelante.</p>
+      <p>30 dólares al mes.</p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

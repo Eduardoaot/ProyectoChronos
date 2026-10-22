@@ -21,9 +21,15 @@ export default function Closing() {
           </Reveal>
           <Reveal className="spot closing-cell" index={1}>
             <p className="t-h3">Si aún lo miras, lee el límite.</p>
-            <a href="#limite" className="link" onClick={onAnchor}>
-              Leer el límite
-            </a>
+            <div className="closing-doc">
+              <a href="/el-limite.pdf" className="link" target="_blank" rel="noopener" data-magnetic>
+                Leer el límite
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M5 3h8v8M13 3 3 13" fill="none" stroke="currentColor" strokeWidth="1.4" />
+                </svg>
+              </a>
+              <span className="label">PDF. Tres páginas.</span>
+            </div>
           </Reveal>
         </div>
       </div>

@@ -663,3 +663,22 @@ html.is-warping .footer {
   fill-opacity: 0.85;
   font-variant-numeric: tabular-nums;
 }
+
+.closing-doc {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.closing-doc .link {
+  gap: 0.6rem;
+}
+
+.closing-doc .link svg {
+  width: 13px;
+  height: 13px;
+  transition: transform var(--d-base) var(--ease);
+}
+
+.closing-doc .link:hover svg {
+  transform: translate(2px, -2px);
+}

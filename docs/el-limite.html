@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>El límite. Chronos One</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400&family=Space+Grotesk:wght@400&display=block" rel="stylesheet" />
+<style>
+  @page { size: 8.5in 11in; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #050505;
+    --paper: #0a0a0a;
+    --text: #f2f2f0;
+    --soft: #a3a3a0;
+    --line: #262624;
+    --gold: #c8a96a;
+    --tempus: #5c2d86;
+  }
+  html, body { background: var(--ink); }
+  body {
+    color: var(--text);
+    font-family: 'Manrope', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    position: relative;
+    width: 8.5in;
+    height: 11in;
+    padding: 0.85in 0.8in 0.9in;
+    overflow: hidden;
+    page-break-after: always;
+    background: var(--ink);
+  }
+  .page:last-child { page-break-after: auto; }
+  .mono { font-family: ui-monospace, 'Cascadia Code', Consolas, monospace; font-size: 7.5pt; letter-spacing: 0.08em; color: var(--soft); }
+  .gold { color: var(--gold); }
+  .display { font-family: 'Space Grotesk', Arial, sans-serif; font-weight: 400; letter-spacing: -0.04em; }
+
+  /* Cabecera y pie de las páginas internas */
+  .head, .foot {
+    position: absolute; left: 0.8in; right: 0.8in;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .head { top: 0.45in; padding-bottom: 10pt; border-bottom: 0.5pt solid var(--line); }
+  .foot { bottom: 0.45in; padding-top: 10pt; border-top: 0.5pt solid var(--line); }
+  .wordmark { display: inline-flex; align-items: center; gap: 8pt; font-family: 'Space Grotesk', Arial, sans-serif; font-size: 8pt; letter-spacing: 0.32em; }
+  .wordmark svg { width: 11pt; height: 11.5pt; }
+
+  /* Portada */
+  .cover { display: flex; flex-direction: column; justify-content: space-between; }
+  .cover-mark { position: absolute; right: -2.3in; top: 1.3in; width: 5.4in; opacity: 0.95; }
+  .cover-axis { position: absolute; left: 0; right: 0; top: calc(1.3in + 2.81in); height: 0.75pt; background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold) 70%, transparent); opacity: 0.6; }
+  .cover-top { position: relative; display: flex; justify-content: space-between; align-items: center; }
+  .cover-title { position: relative; margin-top: auto; }
+  .cover-title h1 { font-size: 78pt; line-height: 0.9; }
+  .cover-title p.sub { margin-top: 16pt; font-size: 13pt; color: var(--soft); max-width: 3.6in; }
+  .cover-rule { margin-top: 26pt; width: 1in; height: 1pt; background: var(--gold); }
+  .cover-line { margin-top: 14pt; font-size: 15pt; }
+  .cover-bottom { position: relative; margin-top: 0.7in; display: flex; justify-content: space-between; align-items: flex-end; border-top: 0.5pt solid var(--line); padding-top: 12pt; }
+
+  /* Secciones */
+  .body { padding-top: 0.25in; }
+  .sec { display: grid; grid-template-columns: 0.55in 1fr; gap: 0 14pt; padding: 20pt 0; border-bottom: 0.5pt solid var(--line); }
+  .sec:last-child { border-bottom: 0; }
+  .sec .n { padding-top: 7pt; }
+  .sec h2 { font-size: 22pt; line-height: 1.05; margin-bottom: 9pt; }
+  .sec p { max-width: 5.2in; color: var(--soft); }
+  .sec p + p { margin-top: 6pt; }
+  .sec p strong { color: var(--text); font-weight: 400; }
+
+  table { width: 100%; margin-top: 14pt; border-collapse: collapse; }
+  th, td { text-align: left; padding: 8pt 0; border-top: 0.5pt solid var(--line); vertical-align: top; }
+  th { font-family: ui-monospace, 'Cascadia Code', Consolas, monospace; font-size: 7pt; letter-spacing: 0.08em; color: var(--soft); font-weight: 400; padding-top: 0; border-top: 0; }
+  td.g { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 12pt; width: 1.1in; }
+  td.c { width: 0.65in; }
+  td.u { width: 0.5in; text-align: right; color: var(--gold); }
+  td.e { color: var(--soft); }
+  .clicks { display: inline-flex; gap: 3pt; padding-top: 5pt; }
+  .clicks i { display: block; width: 9pt; height: 2.5pt; background: var(--line); }
+  .clicks i.on { background: var(--gold); }
+
+  .ten { display: flex; gap: 4pt; align-items: flex-end; margin-top: 14pt; }
+  .ten span { width: 14pt; height: 26pt; background: var(--text); }
+  .ten span.out { background: transparent; border: 0.75pt dashed var(--gold); }
+  .ten-caption { display: flex; justify-content: space-between; width: calc(11 * 14pt + 10 * 4pt); margin-top: 5pt; }
+
+  .years { margin-top: 14pt; }
+  .years-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3pt; }
+  .years-bar span { height: 8pt; background: var(--tempus); }
+  .years-bar span:last-child { background: linear-gradient(90deg, var(--tempus), #2a1540); }
+  .years-scale { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 5pt; }
+
+  .price { display: flex; align-items: flex-end; gap: 10pt; margin-top: 10pt; }
+  .price b { font-family: 'Space Grotesk', Arial, sans-serif; font-weight: 400; font-size: 46pt; line-height: 0.8; letter-spacing: -0.06em; }
+
+  .summary { margin-top: 26pt; padding: 22pt 24pt; border: 0.75pt solid var(--gold); position: relative; }
+  .summary::before, .summary::after { content: ''; position: absolute; width: 10pt; height: 10pt; border: 0 solid var(--gold); }
+  .summary::before { top: -1pt; left: -1pt; border-top-width: 2.5pt; border-left-width: 2.5pt; }
+  .summary::after { right: -1pt; bottom: -1pt; border-right-width: 2.5pt; border-bottom-width: 2.5pt; }
+  .summary p.big { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 24pt; line-height: 1.1; letter-spacing: -0.03em; margin-top: 8pt; }
+  .summary p.big span { color: var(--gold); }
+
+  .seal { position: absolute; right: 0.8in; bottom: 1.05in; width: 1.15in; height: 1.15in; border: 1.5pt solid var(--gold); border-radius: 50%; display: grid; place-items: center; align-content: center; gap: 4pt; transform: rotate(-14deg); color: var(--gold); }
+  .seal svg { width: 22pt; height: 23pt; }
+  .seal .mono { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- Portada -->
+<section class="page cover">
+  <svg class="cover-mark" viewBox="116 82 1700 1768" fill="none" aria-hidden="true">
+    <path d="M189.5 82A776.5 791.5 0 0 0 1742.5 82" stroke="#f2f2f0" stroke-width="147"/>
+    <path d="M189.5 1850A776.5 791.5 0 0 1 1742.5 1850" stroke="#f2f2f0" stroke-width="147"/>
+  </svg>
+  <span class="cover-axis"></span>
+
+  <div class="cover-top">
+    <span class="wordmark"><svg viewBox="116 82 1700 1768" fill="none"><path d="M189.5 82A776.5 791.5 0 0 0 1742.5 82" stroke="#c8a96a" stroke-width="147"/><path d="M189.5 1850A776.5 791.5 0 0 1 1742.5 1850" stroke="#c8a96a" stroke-width="147"/></svg>CHRONOS</span>
+    <span class="mono">Chronos One. Documento de uso</span>
+  </div>
+
+  <div class="cover-title">
+    <p class="mono gold">Edición 2026</p>
+    <h1 class="display" style="margin-top:14pt">El límite.</h1>
+    <p class="sub">Qué cuenta como un uso, cuántos tienes y qué hace el aparato cuando llegas a cero.</p>
+    <div class="cover-rule"></div>
+    <p class="cover-line display">Diez usos al día. El undécimo no entra.</p>
+  </div>
+
+  <div class="cover-bottom">
+    <span class="mono">chronos.one</span>
+    <span class="mono">Tempus sellado. No abrir.</span>
+  </div>
+</section>
+
+<!-- Página 2 -->
+<section class="page">
+  <div class="head">
+    <span class="wordmark"><svg viewBox="116 82 1700 1768" fill="none"><path d="M189.5 82A776.5 791.5 0 0 0 1742.5 82" stroke="#c8a96a" stroke-width="147"/><path d="M189.5 1850A776.5 791.5 0 0 1 1742.5 1850" stroke="#c8a96a" stroke-width="147"/></svg>CHRONOS</span>
+    <span class="mono">El límite</span>
+  </div>
+
+  <div class="body">
+    <div class="sec">
+      <span class="mono gold n">01</span>
+      <div>
+        <h2 class="display">Qué es un uso.</h2>
+        <p>Un uso es un gesto completo. La corona cuenta los clics dentro de una ventana corta. Al cerrarse la ventana, el gesto ocurre y gasta un uso.</p>
+        <table>
+          <thead><tr><th>Gesto</th><th>Clics</th><th>Qué pasa</th><th style="text-align:right">Usos</th></tr></thead>
+          <tbody>
+            <tr><td class="g">Pausa</td><td class="c"><span class="clicks"><i class="on"></i><i></i><i></i></span></td><td class="e">Tu rama se queda quieta. Tú te mueves.</td><td class="u">1</td></tr>
+            <tr><td class="g">Atrás</td><td class="c"><span class="clicks"><i class="on"></i><i class="on"></i><i></i></span></td><td class="e">Diez segundos atrás. Vuelves al punto donde estabas. Tú los recuerdas.</td><td class="u">1</td></tr>
+            <tr><td class="g">Adelante</td><td class="c"><span class="clicks"><i class="on"></i><i class="on"></i><i class="on"></i></span></td><td class="e">Diez segundos adelante. Tu conciencia espera. Tu cuerpo se queda donde está.</td><td class="u">1</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12pt">Los clics de más dentro de la misma ventana no cuentan como otro uso. Salir de una pausa no gasta un uso.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <span class="mono gold n">02</span>
+      <div>
+        <h2 class="display">Diez al día.</h2>
+        <p>Cada día empieza con diez usos. Los usos no se acumulan. Lo que no usas hoy no pasa a mañana.</p>
+        <div class="ten" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="out"></span>
+        </div>
+        <div class="ten-caption"><span class="mono">01</span><span class="mono gold">11</span></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <span class="mono gold n">03</span>
+      <div>
+        <h2 class="display">El undécimo no entra.</h2>
+        <p>Al llegar a cero, la corona deja de responder. El aparato se calienta. Es la señal del límite.</p>
+        <p><strong>No insistas.</strong> El límite es físico. Es parte del aparato. Ninguna membresía lo cambia.</p>
+        <p>Mañana reinician.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="mono">chronos.one</span>
+    <span class="mono">02 / 03</span>
+  </div>
+</section>
+
+<!-- Página 3 -->
+<section class="page">
+  <div class="head">
+    <span class="wordmark"><svg viewBox="116 82 1700 1768" fill="none"><path d="M189.5 82A776.5 791.5 0 0 0 1742.5 82" stroke="#c8a96a" stroke-width="147"/><path d="M189.5 1850A776.5 791.5 0 0 1 1742.5 1850" stroke="#c8a96a" stroke-width="147"/></svg>CHRONOS</span>
+    <span class="mono">El límite</span>
+  </div>
+
+  <div class="body">
+    <div class="sec">
+      <span class="mono gold n">04</span>
+      <div>
+        <h2 class="display">Lo que dura el Tempus.</h2>
+        <p>El Tempus dura cinco años. Después hace falta otro Chronos One. No hay otro modelo.</p>
+        <div class="years" aria-hidden="true">
+          <div class="years-bar"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="years-scale"><span class="mono">Año 1</span><span class="mono">Año 2</span><span class="mono">Año 3</span><span class="mono">Año 4</span><span class="mono gold">Año 5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <span class="mono gold n">05</span>
+      <div>
+        <h2 class="display">La membresía.</h2>
+        <div class="price"><b>30</b><span class="mono">dólares al mes</span></div>
+        <p style="margin-top:12pt">La membresía mantiene la rama abierta.</p>
+        <p>Si dejas de pagar, la rama se cierra y regresas a la línea principal. Los días de la rama no vuelven contigo.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <span class="mono gold n">06</span>
+      <div>
+        <h2 class="display">El sello.</h2>
+        <p>El Tempus vive sellado dentro de la caja. La caja no se abre.</p>
+      </div>
+    </div>
+
+    <div class="summary">
+      <span class="mono gold">En una línea</span>
+      <p class="big">Diez usos al día. <span>El undécimo no entra.</span></p>
+    </div>
+  </div>
+
+  <div class="seal" aria-hidden="true">
+    <svg viewBox="116 82 1700 1768" fill="none"><path d="M189.5 82A776.5 791.5 0 0 0 1742.5 82" stroke="#c8a96a" stroke-width="147"/><path d="M189.5 1850A776.5 791.5 0 0 1 1742.5 1850" stroke="#c8a96a" stroke-width="147"/></svg>
+    <span class="mono">No abrir</span>
+  </div>
+
+  <div class="foot">
+    <span class="mono">Tempus sellado. No abrir.</span>
+    <span class="mono">03 / 03</span>
+  </div>
+</section>
+
+</body>
+</html>

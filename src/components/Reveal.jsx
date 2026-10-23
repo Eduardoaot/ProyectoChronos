@@ -1,7 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { DUR, EASE, RISE, STAGGER } from '../lib/motion'
 
-// Única entrada para todo lo que no es título: sube RISE px, se enfoca, una vez.
+// Única entrada para todo lo que no es título: sube RISE px y aparece, una vez.
+// Solo opacidad y transform: nada que obligue a repintar mientras se hace scroll.
 export default function Reveal({ as = 'div', index = 0, children, className, ...rest }) {
   const reduce = useReducedMotion()
   const Comp = motion[as]
@@ -9,10 +10,10 @@ export default function Reveal({ as = 'div', index = 0, children, className, ...
   return (
     <Comp
       className={className}
-      initial={{ opacity: 0, y: RISE, filter: 'blur(6px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: '0px 0px -10% 0px' }}
-      transition={{ duration: DUR.slow, ease: EASE, delay: index * STAGGER }}
+      initial={{ opacity: 0, y: RISE }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '0px 0px -8% 0px' }}
+      transition={{ duration: DUR.base, ease: EASE, delay: index * STAGGER }}
       {...rest}
     >
       {children}
@@ -20,12 +21,11 @@ export default function Reveal({ as = 'div', index = 0, children, className, ...
   )
 }
 
-export function enterProps(reduce, index = 0, ready = true) {
+export function enterProps(reduce, index = 0) {
   if (reduce) return {}
-  const hidden = { opacity: 0, y: RISE, filter: 'blur(6px)' }
   return {
-    initial: hidden,
-    animate: ready ? { opacity: 1, y: 0, filter: 'blur(0px)' } : hidden,
-    transition: { duration: DUR.slow, ease: EASE, delay: 0.1 + index * STAGGER * 1.5 },
+    initial: { opacity: 0, y: RISE },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: DUR.slow, ease: EASE, delay: 0.15 + index * STAGGER * 1.5 },
   }
 }

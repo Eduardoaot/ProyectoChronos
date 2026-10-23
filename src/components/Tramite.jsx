@@ -19,7 +19,6 @@ import {
   saveTramite,
   validate,
 } from '../lib/tramite'
-import DecodeText from './DecodeText'
 import LogoMark from './LogoMark'
 import Reveal from './Reveal'
 
@@ -163,7 +162,6 @@ function SignaturePad({ value, name, onChange, error }) {
         onPointerMove={move}
         onPointerUp={up}
         onPointerCancel={up}
-        data-cursor="draw"
       />
       <Err id="sign-err">{error}</Err>
     </div>
@@ -217,8 +215,6 @@ function Copies({ stamps, onStamp }) {
             disabled={!next}
             onClick={onStamp}
             aria-label={done ? `Copia ${i + 1}, sellada` : `Sellar copia ${i + 1}`}
-            data-cursor={next ? 'label' : undefined}
-            data-cursor-label="Sellar"
           >
             <span className="copy-lines" aria-hidden="true">
               <span />
@@ -327,7 +323,7 @@ function Constancia({ t, onReset }) {
         <span className="label">{pos === 1 ? 'Es tu turno. Lleva las diez copias.' : 'La fila avanza sola.'}</span>
       </div>
 
-      <article className="constancia spot" aria-label={`Constancia ${t.folio}`}>
+      <article className="constancia" aria-label={`Constancia ${t.folio}`}>
         <header className="constancia-head">
           <span className="wordmark">
             <LogoMark className="wordmark-mark" />
@@ -362,11 +358,8 @@ function Constancia({ t, onReset }) {
               transition={{ duration: DUR.slow, ease: EASE }}
             >
               <ol className="constancia-terms">
-                {TERMS.map((x, i) => (
-                  <li key={x}>
-                    <span className="label label-index">0{i + 1}</span>
-                    <span>{x}</span>
-                  </li>
+                {TERMS.map((x) => (
+                  <li key={x}>{x}</li>
                 ))}
               </ol>
               <div className="constancia-sign">
@@ -389,11 +382,8 @@ function Constancia({ t, onReset }) {
       </article>
 
       <div className="constancia-actions">
-        <button type="button" className="btn btn-primary" onClick={download} disabled={!finished} data-magnetic>
+        <button type="button" className="btn btn-primary" onClick={download} disabled={!finished}>
           <span>Descargar constancia</span>
-          <svg viewBox="0 0 16 16" aria-hidden="true">
-            <path d="M8 2v10M3.5 7.5 8 12l4.5-4.5M2 14.5h12" fill="none" stroke="currentColor" strokeWidth="1.4" />
-          </svg>
         </button>
         <button type="button" className="btn btn-ghost" onClick={() => window.print()} disabled={!finished}>
           <span>Imprimir</span>
@@ -491,9 +481,9 @@ export default function Tramite() {
   const toggleDay = (day) => set({ days: d.days.includes(day) ? d.days.filter((x) => x !== day) : [...d.days, day] })
 
   const variants = {
-    enter: (k) => ({ opacity: 0, x: k * 40, filter: 'blur(6px)' }),
-    center: { opacity: 1, x: 0, filter: 'blur(0px)' },
-    exit: (k) => ({ opacity: 0, x: k * -40, filter: 'blur(6px)' }),
+    enter: (k) => ({ opacity: 0, x: k * 24 }),
+    center: { opacity: 1, x: 0 },
+    exit: (k) => ({ opacity: 0, x: k * -24 }),
   }
 
   const title = [
@@ -516,7 +506,9 @@ export default function Tramite() {
     <section id="tramite" ref={sectionRef} className="section signup" aria-labelledby="tramite-title">
       <div className="wrap split tramite-grid">
         <div className="tramite-side">
-          <DecodeText as="h2" id="tramite-title" className="t-h2" text="Pedir el trámite." />
+          <Reveal as="h2" id="tramite-title" className="t-h2">
+            Pedir el trámite.
+          </Reveal>
           <Reveal as="p" className="t-lead" index={1}>
             El registro empieza por tu nombre. Las diez copias vienen después.
           </Reveal>
@@ -528,9 +520,7 @@ export default function Tramite() {
               return (
                 <li key={s} className={`stepper-item is-${state}`}>
                   <button type="button" disabled={!canGo} onClick={() => go(i)} aria-current={state === 'current' ? 'step' : undefined}>
-                    <span className="label label-index">0{i + 1}</span>
                     <span className="stepper-name">{s}</span>
-                    <span className="stepper-dot" aria-hidden="true" />
                   </button>
                 </li>
               )
@@ -538,13 +528,13 @@ export default function Tramite() {
           </Reveal>
         </div>
 
-        <Reveal className="tramite-card spot" index={1}>
+        <Reveal className="tramite-card" index={1}>
           <div className="tramite-progress" aria-hidden="true">
             <motion.span initial={false} animate={{ scaleX: (t.step + 1) / STEPS.length }} transition={{ duration: DUR.slow, ease: EASE }} />
           </div>
           <div className="tramite-head">
             <span className="label">
-              Paso {String(t.step + 1).padStart(2, '0')} de {String(STEPS.length).padStart(2, '0')}
+              Paso {t.step + 1} de {STEPS.length}
             </span>
             {t.folio && <span className="label label-gold">Folio {t.folio}</span>}
           </div>
@@ -681,11 +671,8 @@ export default function Tramite() {
                           <span>Sellar la siguiente</span>
                         </button>
                       ) : (
-                        <button type="button" className="btn btn-primary" onClick={deliver} data-magnetic>
+                        <button type="button" className="btn btn-primary" onClick={deliver}>
                           <span>Entregar las diez copias</span>
-                          <svg viewBox="0 0 16 16" aria-hidden="true">
-                            <path d="M2 8h11M8.5 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.4" />
-                          </svg>
                         </button>
                       )}
                     </div>
@@ -712,11 +699,8 @@ function StepNav({ onBack, label }) {
       ) : (
         <span />
       )}
-      <button type="submit" className="btn btn-primary" data-magnetic>
+      <button type="submit" className="btn btn-primary">
         <span>{label}</span>
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M2 8h11M8.5 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.4" />
-        </svg>
       </button>
     </div>
   )

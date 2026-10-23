@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import 'lenis/dist/lenis.css'
 import './styles.css'
 import './interactive.css'
 import './effects.css'

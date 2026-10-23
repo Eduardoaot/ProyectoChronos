@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { DUR, EASE, STAGGER } from '../lib/motion'
 import { useAnchor } from '../lib/scroll'
-import DecodeText from './DecodeText'
 import Reveal from './Reveal'
 
 // Los iconos se dibujan una vez, al entrar, con la misma curva que el resto.
@@ -94,28 +93,26 @@ export default function Gestures() {
     <section id="gestos" className="section" aria-labelledby="gestos-title">
       <div className="wrap">
         <header className="section-head">
-          <DecodeText as="h2" id="gestos-title" className="t-h2" text="Tres gestos." />
+          <Reveal as="h2" id="gestos-title" className="t-h2">
+            Tres gestos.
+          </Reveal>
           <Reveal as="p" className="t-lead" index={1}>
             El mismo botón. Cambia cuántas veces lo presionas.
           </Reveal>
         </header>
 
         <div className="bento">
-          <Reveal className="spot cell cell-1">
-            <span className="cell-num" aria-hidden="true">1</span>
+          <Reveal className="cell cell-1">
             <IconPause />
             <h3 className="t-h3">Un clic.</h3>
             <p>Tu rama se queda quieta. Tú te mueves.</p>
           </Reveal>
-          <Reveal className="spot cell cell-2" index={1}>
-            <span className="cell-num" aria-hidden="true">2</span>
+          <Reveal className="cell cell-2" index={1}>
             <IconTurn dir={-1} />
             <h3 className="t-h3">Dos clics.</h3>
             <p>Diez segundos atrás. Vuelves al punto donde estabas. Esos segundos se deshacen. Tú los recuerdas.</p>
           </Reveal>
-          <Reveal className="spot cell cell-3 cell-feature" index={0}>
-            <span className="cell-num" aria-hidden="true">3</span>
-            <span className="cell-frame" aria-hidden="true" />
+          <Reveal className="cell cell-3 cell-feature" index={0}>
             <IconTurn dir={1} />
             <h3 className="t-h3">Tres clics.</h3>
             <p>Diez segundos adelante. Tu conciencia espera. Tu cuerpo se queda donde está. Sigues siendo materia. El mundo no se aparta.</p>
@@ -123,8 +120,7 @@ export default function Gestures() {
               Presiona la corona
             </a>
           </Reveal>
-          <Reveal className="spot cell cell-4" id="limite" index={1}>
-            <span className="cell-num" aria-hidden="true">10</span>
+          <Reveal className="cell cell-4" id="limite" index={1}>
             <IconTen />
             <h3 className="t-h3">Diez al día.</h3>
             <p>Diez usos. El undécimo no entra. Es el límite del aparato.</p>

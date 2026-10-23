@@ -1,6 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useScrollApi } from './scroll'
-import { easeFn } from './motion'
 
 const ChronosCtx = createContext(null)
 const WINDOW_MS = 700
@@ -26,9 +25,7 @@ export function ChronosProvider({ children }) {
   const [gesture, setGesture] = useState('idle')
   const [paused, setPaused] = useState(false)
   const [pips, setPips] = useState(0)
-  const [mark, setMark] = useState(50)
   const [fx, setFx] = useState(null)
-  const [log, setLog] = useState([])
 
   const count = useRef(0)
   const fired = useRef(false)
@@ -65,25 +62,20 @@ export function ChronosProvider({ children }) {
       }
       if (usesRef.current <= 0) return
       setUses((u) => u - 1)
-      const stamp = Date.now()
-      const entry = (kind) => setLog((l) => [{ id: stamp, kind, at: branchNow() }, ...l].slice(0, 4))
       if (n === 1) {
-        entry('pause')
         setGesture('pause')
         setPause(true)
         return
       }
       const kind = n === 2 ? 'back' : 'forward'
       setGesture(kind)
-      entry(kind)
-      setMark((m) => Math.max(6, Math.min(94, m + (kind === 'back' ? -11 : 11))))
       const id = Date.now()
       setFx({ kind, id })
       setTimeout(() => setFx((f) => (f?.id === id ? null : f)), 2200)
       const target = kind === 'back' ? document.body : document.getElementById('pie')
-      requestAnimationFrame(() => scrollTo(target, { duration: 1.9, easing: easeFn }))
+      requestAnimationFrame(() => scrollTo(target))
     },
-    [scrollTo, setPause, branchNow],
+    [scrollTo, setPause],
   )
 
   const press = useCallback(() => {
@@ -129,8 +121,8 @@ export function ChronosProvider({ children }) {
   useEffect(() => () => clearTimeout(timer.current), [])
 
   const value = useMemo(
-    () => ({ uses, max: MAX_USES, gesture, paused, pips, mark, fx, log, press, branchNow, status: statusText(gesture, uses) }),
-    [uses, gesture, paused, pips, mark, fx, log, press, branchNow],
+    () => ({ uses, max: MAX_USES, gesture, paused, pips, fx, press, branchNow, status: statusText(gesture, uses) }),
+    [uses, gesture, paused, pips, fx, press, branchNow],
   )
   return <ChronosCtx.Provider value={value}>{children}</ChronosCtx.Provider>
 }

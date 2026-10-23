@@ -131,8 +131,6 @@ export default function Watch() {
 
       <motion.div
         className={`watch-tilt ${reduce ? '' : 'is-floating'} ${blocked ? 'is-dead' : ''}`}
-        data-cursor={blocked ? 'default' : 'label'}
-        data-cursor-label={paused ? 'Seguir' : 'Presiona'}
         style={{ rotateX: srx, rotateY: sry }}
         onClick={use}
       >
@@ -267,8 +265,6 @@ export default function Watch() {
           className="crown-btn"
           aria-label={blocked ? 'Usar Chronos One. Sin usos hoy.' : 'Usar Chronos One'}
           aria-disabled={blocked || undefined}
-          data-cursor={blocked ? 'default' : 'label'}
-          data-cursor-label={paused ? 'Seguir' : 'Presiona'}
           onClick={(e) => {
             e.stopPropagation()
             use()

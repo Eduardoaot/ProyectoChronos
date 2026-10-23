@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { useChronos } from '../lib/chronos'
 import { DUR, EASE, STAGGER } from '../lib/motion'
-import DecodeText from './DecodeText'
 import Reveal from './Reveal'
 
 const STEPS = [
@@ -35,7 +34,7 @@ function Terminal() {
     ['USOS HOY', `${String(uses).padStart(2, '0')} / ${max}`],
   ]
   return (
-    <div className="spot terminal" ref={ref}>
+    <div className="terminal" ref={ref}>
       <div className="terminal-bar" aria-hidden="true">
         <span className={`terminal-live ${paused ? 'is-paused' : ''} ${uses === 0 ? 'is-hot' : ''}`} />
         <span className="label">Estado de tu rama</span>
@@ -60,36 +59,20 @@ function Terminal() {
   )
 }
 
-function BranchLines() {
-  const ref = useRef(null)
-  const reduce = useReducedMotion()
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end 0.4'] })
-  const draw = useTransform(scrollYProgress, [0.05, 0.85], [0, 1])
-  return (
-    <div ref={ref} className="branch-lines" aria-hidden="true">
-      <svg viewBox="0 0 1200 160" preserveAspectRatio="none">
-        <line x1="0" y1="110" x2="1200" y2="110" className="branch-main" />
-        <motion.path d="M260 110 C 420 110, 470 34, 640 34 L 1200 34" className="branch-own" style={reduce ? undefined : { pathLength: draw }} />
-      </svg>
-      <span className="branch-node" />
-    </div>
-  )
-}
-
 export default function Branch() {
   return (
     <section id="rama" className="section ink branch" aria-labelledby="rama-title">
-      <BranchLines />
       <div className="wrap">
-        <DecodeText as="h2" id="rama-title" className="t-h2" text="La línea sigue." />
+        <Reveal as="h2" id="rama-title" className="t-h2">
+          La línea sigue.
+        </Reveal>
         <div className="split branch-grid">
           <Reveal>
             <Terminal />
           </Reveal>
-          <ol className="rows rows-flush">
+          <ol className="rows rows-flush steps">
             {STEPS.map(([title, body], i) => (
               <Reveal as="li" key={title} index={i} className="row">
-                <span className="label label-index">0{i + 1}</span>
                 <div>
                   <h3 className="t-h3">{title}</h3>
                   <p className="row-body">{body}</p>

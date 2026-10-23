@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useAnchor } from '../lib/scroll'
 import { DUR, EASE, STAGGER } from '../lib/motion'
 import { Wordmark } from './LogoMark'
@@ -15,8 +15,6 @@ export default function Nav({ theme, onToggleTheme }) {
   const [solid, setSolid] = useState(false)
   const [open, setOpen] = useState(false)
   const onAnchor = useAnchor()
-  const { scrollYProgress } = useScroll()
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 })
   const themeLabel = theme === 'dark' ? 'Claro' : 'Oscuro'
 
   useEffect(() => {
@@ -73,7 +71,6 @@ export default function Nav({ theme, onToggleTheme }) {
             </button>
           </div>
         </div>
-        <motion.div className="nav-progress" style={{ scaleX: progress }} aria-hidden="true" />
         <AnimatePresence>
           {open && (
             <motion.div
@@ -94,7 +91,6 @@ export default function Nav({ theme, onToggleTheme }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: DUR.base, ease: EASE, delay: 0.1 + i * STAGGER }}
                   >
-                    <span className="label label-index">0{i + 1}</span>
                     <span className="t-h3">{label}</span>
                   </motion.a>
                 ))}
